@@ -7,77 +7,41 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout repository code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Setup Node.js (Angular 15 safe version)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
+      # 3. Install dependencies (handle legacy peer deps)
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
+      # 4. Run unit tests (CI-safe flags)
       - name: Run unit tests
         run: npm run test -- --watch=false --browsers=ChromeHeadless
 
+      # 5. Build Angular app (production build)
       - name: Build app
         run: npm run build
 
+      # 6. Configure Git identity (required for gh-pages)
       - name: Configure Git user
         run: |
           git config --global user.name "nik089"
           git config --global user.email "niteshy089@gmail.com"
 
+      # 7. Deploy to GitHub Pages (ONLY on master)
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/master'
         run: npm run deploy
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          name: Angular CI/CD
-
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-
-      - name: Run unit tests
-        run: npm run test -- --watch=false --browsers=ChromeHeadless
-
-      - name: Build app
-        run: npm run build
-
-      - name: Configure Git user
-        run: |
-          git config --global user.name "nik089"
-          git config --global user.email "niteshy089@gmail.com"
-
-      - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/master'
-        run: npm run deploy
-        env:
-          env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
