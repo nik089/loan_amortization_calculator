@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoanFormComponent } from './loan-form.component';
 import { LoanService } from '../loan.service';
-import { ToastrManager } from 'ng6-toastr-notifications';
 
 /* -------------------- MOCKS -------------------- */
 
@@ -49,7 +48,6 @@ describe('LoanFormComponent', () => {
       providers: [
         { provide: LoanService, useClass: MockLoanService },
         { provide: Router, useClass: MockRouter },
-        { provide: ToastrManager, useClass: MockToastrManager }
       ]
     }).compileComponents();
 

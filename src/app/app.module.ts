@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { ToastrModule } from 'ng6-toastr-notifications';
 
 @NgModule({
   declarations: [
@@ -14,8 +13,6 @@ import { ToastrModule } from 'ng6-toastr-notifications';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ToastrModule.forRoot(),
-
   ],
   providers: [],
   bootstrap: [AppComponent]

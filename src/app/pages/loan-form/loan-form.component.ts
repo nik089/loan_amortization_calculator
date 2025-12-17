@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoanService } from '../loan.service';
-import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
   selector: 'app-loan-form',
@@ -19,8 +18,7 @@ export class LoanFormComponent implements OnInit {
   constructor(
     private formbuilder: FormBuilder,
     private router: Router,
-    public loanService: LoanService,
-    private toaster: ToastrManager) { }
+    public loanService: LoanService ) { }
 
   ngOnInit() {
     this.loanForm = this.formbuilder.group({
