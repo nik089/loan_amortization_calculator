@@ -1,13 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
-import { LoanService } from '../loan.service';
 import { LoanFormComponent } from './loan-form.component';
+import { LoanService } from '../loan.service';
 import { ToastrManager } from 'ng6-toastr-notifications';
 
+/* -------------------- MOCKS -------------------- */
+
 class MockLoanService {
-  generateAmortizationSchedule = jasmine.createSpy('generateAmortizationSchedule').and.returnValue([]);
+  generateAmortizationSchedule = jasmine
+    .createSpy('generateAmortizationSchedule')
+    .and.returnValue([
+      {
+        month: 1,
+        monthlyPayment: 1000,
+        principalPayment: 800,
+        interestPayment: 200,
+        remainingBalance: 9200
+      }
+    ]);
+
   setLoanScheduleData = jasmine.createSpy('setLoanScheduleData');
 }
 
@@ -15,11 +27,21 @@ class MockRouter {
   navigate = jasmine.createSpy('navigate');
 }
 
+class MockToastrManager {
+  success = jasmine.createSpy('success');
+  error = jasmine.createSpy('error');
+  warning = jasmine.createSpy('warning');
+  info = jasmine.createSpy('info');
+}
+
+/* -------------------- TEST SUITE -------------------- */
+
 describe('LoanFormComponent', () => {
   let component: LoanFormComponent;
   let fixture: ComponentFixture<LoanFormComponent>;
   let loanService: LoanService;
   let router: Router;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
@@ -27,14 +49,18 @@ describe('LoanFormComponent', () => {
       providers: [
         { provide: LoanService, useClass: MockLoanService },
         { provide: Router, useClass: MockRouter },
+        { provide: ToastrManager, useClass: MockToastrManager }
       ]
     }).compileComponents();
+
     fixture = TestBed.createComponent(LoanFormComponent);
     component = fixture.componentInstance;
     loanService = TestBed.inject(LoanService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
+
+  /* -------------------- TEST CASES -------------------- */
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
@@ -53,7 +79,7 @@ describe('LoanFormComponent', () => {
     expect(component.loanForm.invalid).toBeTrue();
   });
 
-  it('should call generateAmortizationSchedule on valid form submission', () => {
+  it('should call generateAmortizationSchedule and navigate on valid form submission', () => {
     component.loanForm.setValue({
       loanAmount: 10000,
       interestRate: 5,
@@ -64,6 +90,7 @@ describe('LoanFormComponent', () => {
     });
 
     component.onSubmit();
+
     expect(loanService.generateAmortizationSchedule).toHaveBeenCalled();
     expect(loanService.setLoanScheduleData).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['loan', 'schedule-list']);
