@@ -30,8 +30,11 @@ export class VisualizationComponent implements OnInit {
         setTimeout(() => {
           this.getChart();
         }, 1000);
+        this.isLoader = false;
+
       } else {
-        this.router.navigate(['loan'])
+        this.router.navigate(['loan']);
+        this.isLoader = false;
       }
     })
   }
