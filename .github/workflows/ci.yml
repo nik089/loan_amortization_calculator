@@ -33,7 +33,7 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: angular-dist
+          name: angular-dist-${{ github.sha }}
           path: dist/
 
   cd:
