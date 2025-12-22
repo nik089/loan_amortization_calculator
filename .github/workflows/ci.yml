@@ -49,7 +49,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: angular-dist
+          name: angular-dist-${{ github.sha }}
           path: dist/
 
       - name: Setup Node.js
