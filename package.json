@@ -1,13 +1,13 @@
 {
-  "name": "task",
+  "name": "loan_amortization_calculator",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-"build": "ng build --configuration production --base-href /task/ --deploy-url /task/",
+    "build": "ng build --configuration production --base-href /loan_amortization_calculator/ --deploy-url /loan_amortization_calculator/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "gh-pages -d dist/task -r https://x-access-token:${GH_TOKEN}@github.com/nik089/task.git"
+    "deploy": "gh-pages -d dist/loan_amortization_calculator -r https://x-access-token:${GH_TOKEN}@github.com/nik089/loan_amortization_calculator.git"
   },
   "private": true,
   "dependencies": {
